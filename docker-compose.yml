@@ -10,6 +10,8 @@ services:
     image: node
     ports:
       - "3000:3000"
+    links:
+      - rabbitmq
     volumes:
       - ./core:/app
     working_dir: /app/
@@ -24,12 +26,18 @@ services:
 
   worker.user:
     image: node
+    links:
+      - rabbitmq
+      - neo4j
     volumes:
       - ./worker.user:/app
     working_dir: /app/
     command: npm start
     environment:
       AMQP: amqp://rabbit:pass@rabbitmq
+      NEO4J_HOST: bolt://neo4j
+      NEO4J_USER: neo4j
+      NEO4J_PASS: pass
 
 
   #########################################################
