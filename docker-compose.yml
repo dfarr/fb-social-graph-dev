@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+
+  #########################################################
+  ## APP: Core
+  #########################################################
+
+  core:
+    image: node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./core:/app
+    working_dir: /app/
+    command: npm start
+    environment:
+      AMQP: amqp://rabbit:pass@rabbitmq
+
+
+  #########################################################
+  ## DB: Redis
+  #########################################################
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+
+  #########################################################
+  ## DB: Neo4j
+  #########################################################
+
+  neo4j:
+    image: neo4j
+    ports:
+      - "7474:7474"
+    environment:
+      NEO4J_AUTH: "neo4j/pass"
+
+
+  #########################################################
+  ## AMQP: Rabbitmq
+  #########################################################
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672" 
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbit"
+      RABBITMQ_DEFAULT_PASS: "pass"
+
