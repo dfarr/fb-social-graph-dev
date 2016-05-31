@@ -11,33 +11,54 @@ services:
     ports:
       - "3000:3000"
     links:
+      - postgres
       - rabbitmq
+      - redis
     volumes:
       - ./core:/app
     working_dir: /app/
     command: npm start
     environment:
       AMQP: amqp://rabbit:pass@rabbitmq
+      POSTGRES: postgres://postgres:pass@postgres/bunch
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FB_CLIENT: 1002150193167658
+      FB_SECRET: 5407ca311e24cc72c133a74e01778b6c
 
 
   #########################################################
-  ## APP: worker.user
+  ## APP: worker
   #########################################################
 
-  worker.user:
+  worker:
     image: node
     links:
+      - postgres
       - rabbitmq
       - neo4j
     volumes:
-      - ./worker.user:/app
+      - ./worker:/app
     working_dir: /app/
     command: npm start
     environment:
       AMQP: amqp://rabbit:pass@rabbitmq
+      POSTGRES: postgres://postgres:pass@postgres/bunch
       NEO4J_HOST: bolt://neo4j
       NEO4J_USER: neo4j
       NEO4J_PASS: pass
+
+
+  #########################################################
+  ## DB: postgres
+  #########################################################
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: bunch
 
 
   #########################################################
