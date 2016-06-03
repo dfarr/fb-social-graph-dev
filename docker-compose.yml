@@ -11,18 +11,13 @@ services:
     ports:
       - "3000:3000"
     links:
-      - postgres
       - rabbitmq
-      - redis
     volumes:
       - ./core:/app
     working_dir: /app/
     command: npm start
     environment:
       AMQP: amqp://rabbit:pass@rabbitmq
-      POSTGRES: postgres://postgres:pass@postgres/bunch
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
       FB_CLIENT: 1002150193167658
       FB_SECRET: 5407ca311e24cc72c133a74e01778b6c
 
@@ -55,20 +50,12 @@ services:
 
   postgres:
     image: postgres
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: bunch
-
-
-  #########################################################
-  ## DB: redis
-  #########################################################
-
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
 
 
   #########################################################
