@@ -3,13 +3,30 @@ version: '2'
 services:
 
   #########################################################
+  ## LB: haproxy
+  #########################################################
+
+  lb:
+    image: dockercloud/haproxy
+    ports:
+      - "3000:80"
+      - "1936:1936"
+    links:
+      - core
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      STATS_AUTH: lb:pass
+
+
+  #########################################################
   ## APP: core
   #########################################################
 
   core:
     image: node
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     links:
       - rabbitmq
     volumes:
@@ -17,7 +34,7 @@ services:
     working_dir: /app/
     command: npm start
     environment:
-      AMQP: amqp://rabbit:pass@rabbitmq
+      AMQP: amqp://rabbitmq:pass@rabbitmq
       FB_CLIENT: 1002150193167658
       FB_SECRET: 5407ca311e24cc72c133a74e01778b6c
 
@@ -37,7 +54,7 @@ services:
     working_dir: /app/
     command: npm start
     environment:
-      AMQP: amqp://rabbit:pass@rabbitmq
+      AMQP: amqp://rabbitmq:pass@rabbitmq
       POSTGRES: postgres://postgres:pass@postgres/bunch
       NEO4J_HOST: bolt://neo4j
       NEO4J_USER: neo4j
@@ -67,7 +84,7 @@ services:
     ports:
       - "7474:7474"
     environment:
-      NEO4J_AUTH: "neo4j/pass"
+      NEO4J_AUTH: neo4j/pass
 
 
   #########################################################
@@ -80,6 +97,5 @@ services:
       - "5672:5672" 
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: "rabbit"
-      RABBITMQ_DEFAULT_PASS: "pass"
-
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: pass
