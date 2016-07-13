@@ -8,9 +8,9 @@
 ## run
 
 ```
-git clone git@github.com:bunchchat/dev.git
-git clone git@github.com:bunchchat/core.git dev/core
-git clone git@github.com:bunchchat/worker.git dev/worker
+git clone git@github.com:dfarr/fb-social-graph-dev.git
+git clone git@github.com:dfarr/fb-social-graph-core.git dev/core
+git clone git@github.com:dfarr/fb-social-graph-worker.git dev/worker
 
 cd dev
 
