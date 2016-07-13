@@ -8,7 +8,7 @@
 ## run
 
 ```
-git clone git@github.com:dfarr/fb-social-graph-dev.git
+git clone git@github.com:dfarr/fb-social-graph-dev.git dev
 git clone git@github.com:dfarr/fb-social-graph-core.git dev/core
 git clone git@github.com:dfarr/fb-social-graph-worker.git dev/worker
 
